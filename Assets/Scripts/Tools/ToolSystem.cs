@@ -129,6 +129,11 @@ public class ToolSystem : MonoBehaviour
             CreatureGenerator.Instance?.SetRarityBonus(data.mutatorRarityBonus);
     }
 
+    // ── Data access ──────────────────────────────────────────────────────
+
+    public ToolData GetToolData(ToolType type)
+        => _dataMap.TryGetValue(type, out var d) ? d : null;
+
     // ── Save / Load ──────────────────────────────────────────────────────
 
     public void LoadFromSave(Dictionary<ToolType, bool> unlockedState,

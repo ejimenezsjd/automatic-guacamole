@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject _collectionScreen;
     [SerializeField] private GameObject _fusionScreen;
     [SerializeField] private GameObject _evolutionScreen;
+    [SerializeField] private GameObject _toolsScreen;
 
     private GameObject _current;
 
@@ -34,15 +35,17 @@ public class UIManager : MonoBehaviour
             ScreenType.Collection => _collectionScreen,
             ScreenType.Fusion     => _fusionScreen,
             ScreenType.Evolution  => _evolutionScreen,
+            ScreenType.Tools      => _toolsScreen,
             _                     => _mainScreen,
         };
 
         _current?.SetActive(true);
     }
 
-    // Convenience wrappers for UnityEvent bindings on buttons
+    // Convenience wrappers — assign to Button.OnClick in the Inspector
     public void ShowMain()       => ShowScreen(ScreenType.Main);
     public void ShowCollection() => ShowScreen(ScreenType.Collection);
     public void ShowFusion()     => ShowScreen(ScreenType.Fusion);
     public void ShowEvolution()  => ShowScreen(ScreenType.Evolution);
+    public void ShowTools()      => ShowScreen(ScreenType.Tools);
 }

@@ -31,7 +31,7 @@ public class StarterDataGenerator : EditorWindow
         if (GUILayout.Button("GameBalanceConfig"))                  GenerateBalanceConfig();
     }
 
-    private static void GenerateAll()
+    public static void GenerateAll()
     {
         GenerateCreatures();
         GenerateTools();
