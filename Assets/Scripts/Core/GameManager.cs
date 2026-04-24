@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private GameBalanceConfig _balance;
+
     private bool _initialised = false;
 
     private void Awake()
@@ -25,17 +27,31 @@ public class GameManager : MonoBehaviour
         if (_initialised) return;
         _initialised = true;
 
+        ApplyBalanceConfig();
+
         bool hasSave = SaveSystem.Instance?.LoadGame() ?? false;
         if (!hasSave) SeedNewGame();
 
         Debug.Log("[GameManager] Initialised.");
     }
 
+    private void ApplyBalanceConfig()
+    {
+        if (_balance == null) return;
+
+        ProductionManager.Instance?.SetTickInterval(_balance.tickInterval);
+        DynamicEventSystem.Instance?.Configure(_balance.eventCheckInterval, _balance.eventTriggerChance);
+    }
+
     private void SeedNewGame()
     {
-        DNAController.Instance?.AddDNA(DNAType.Normal, 100f);
-        DNAController.Instance?.AddDNA(DNAType.Fuego,  50f);
-        DNAController.Instance?.AddDNA(DNAType.Agua,   50f);
+        float normal = _balance != null ? _balance.starterNormalDNA : 100f;
+        float fire   = _balance != null ? _balance.starterFireDNA   : 50f;
+        float water  = _balance != null ? _balance.starterWaterDNA  : 50f;
+
+        DNAController.Instance?.AddDNA(DNAType.Normal, normal);
+        DNAController.Instance?.AddDNA(DNAType.Fuego,  fire);
+        DNAController.Instance?.AddDNA(DNAType.Agua,   water);
         ToolSystem.Instance?.TryUnlockTool(ToolType.AutoExtractor);
     }
 

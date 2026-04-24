@@ -14,18 +14,18 @@ public class EvolutionScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnCreatureCreated += _ => RefreshList();
-        GameEvents.OnCreatureEvolved += _ => RefreshList();
-        GameEvents.OnTickProcessed   += RefreshList;
+        GameEvents.OnCreatureCreated += OnCreatureChanged;
+        GameEvents.OnCreatureEvolved += OnCreatureChanged;
         RefreshList();
     }
 
     private void OnDisable()
     {
-        GameEvents.OnCreatureCreated -= _ => RefreshList();
-        GameEvents.OnCreatureEvolved -= _ => RefreshList();
-        GameEvents.OnTickProcessed   -= RefreshList;
+        GameEvents.OnCreatureCreated -= OnCreatureChanged;
+        GameEvents.OnCreatureEvolved -= OnCreatureChanged;
     }
+
+    private void OnCreatureChanged(Creature _) => RefreshList();
 
     private void RefreshList()
     {

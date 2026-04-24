@@ -67,13 +67,13 @@ public class CreatureManager : MonoBehaviour
         foreach (DNAType type in System.Enum.GetValues(typeof(DNAType)))
             DNAController.Instance.SetPassiveRate(type, 0f);
 
-        float prestigeMult = PrestigeSystem.Instance != null
-            ? PrestigeSystem.Instance.GetProductionMultiplier()
-            : 1f;
+        float prestigeMult = PrestigeSystem.Instance?.GetProductionMultiplier() ?? 1f;
+        float eventMult    = DynamicEventSystem.Instance?.GetProductionMultiplier() ?? 1f;
+        float totalMult    = prestigeMult * eventMult;
 
         foreach (var creature in _creatures)
         {
-            float production = creature.GetTotalProduction(prestigeMult);
+            float production = creature.GetTotalProduction(totalMult);
             float perType    = production / Mathf.Max(1, creature.dnaTypes.Count);
 
             foreach (var dnaType in creature.dnaTypes)

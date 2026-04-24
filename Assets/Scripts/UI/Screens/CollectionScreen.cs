@@ -12,18 +12,21 @@ public class CollectionScreen : MonoBehaviour
 
     private void OnEnable()
     {
-        GameEvents.OnCreatureCreated += _ => RefreshList();
-        GameEvents.OnCreatureEvolved += _ => RefreshList();
-        GameEvents.OnCreaturesFused  += (_, _, _) => RefreshList();
+        GameEvents.OnCreatureCreated += OnCreatureChanged;
+        GameEvents.OnCreatureEvolved += OnCreatureChanged;
+        GameEvents.OnCreaturesFused  += OnFusionCompleted;
         RefreshList();
     }
 
     private void OnDisable()
     {
-        GameEvents.OnCreatureCreated -= _ => RefreshList();
-        GameEvents.OnCreatureEvolved -= _ => RefreshList();
-        GameEvents.OnCreaturesFused  -= (_, _, _) => RefreshList();
+        GameEvents.OnCreatureCreated -= OnCreatureChanged;
+        GameEvents.OnCreatureEvolved -= OnCreatureChanged;
+        GameEvents.OnCreaturesFused  -= OnFusionCompleted;
     }
+
+    private void OnCreatureChanged(Creature _) => RefreshList();
+    private void OnFusionCompleted(Creature _a, Creature _b, Creature _result) => RefreshList();
 
     private void RefreshList()
     {
@@ -44,7 +47,7 @@ public class CollectionScreen : MonoBehaviour
 
             if (labels.Length > 0) labels[0].text = c.name;
             if (labels.Length > 1) labels[1].text = $"Lv.{c.evolutionLevel}  |  {c.rarity}  |  Dupes: {c.duplicates}";
-            if (labels.Length > 2) labels[2].text = $"{c.GetTotalProduction(prestige):F2} DNA/s";
+            if (labels.Length > 2) labels[2].text = NumberFormatter.FormatRate(c.GetTotalProduction(prestige));
         }
     }
 }

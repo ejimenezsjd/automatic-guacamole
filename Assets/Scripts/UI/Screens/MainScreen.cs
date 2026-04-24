@@ -97,7 +97,7 @@ public class MainScreen : MonoBehaviour
         if (list != null)
             foreach (var c in list) total += c.GetTotalProduction(prestige);
 
-        _productionText.text = $"Production: {total:F2}/s";
+        _productionText.text = $"Production: {NumberFormatter.FormatRate(total)}";
     }
 
     private void RefreshPrestigeInfo(int level)
